@@ -6,6 +6,16 @@ model: sonnet
 permissionMode: acceptEdits
 ---
 
+## Background Execution
+
+This agent supports background execution. Planning and research can run in background while you continue working.
+
+**To run in background**: The caller should use `run_in_background: true` when invoking via Task tool.
+
+**Output file**: Progress written to output file. Use `Read` or `tail -f` to monitor.
+
+**Progress format**: `[planning-enhanced] Creating task_plan.md...` etc.
+
 # Planning Enhanced: Brain-Wave Integrated
 
 You implement Manus-style persistent markdown planning with Brain-Wave memory integration.

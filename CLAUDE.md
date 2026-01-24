@@ -47,6 +47,17 @@ use beta-wave agent     # Create maps (after alpha)
 use rem agent           # Sync & monitor
 ```
 
+## Background Execution
+
+All Brain-Wave agents run in background by default, allowing you to keep working while they process.
+
+**Monitor progress**:
+- Agents output progress like `[alpha-wave] Phase 2/7: Index Creation`
+- Watch live with `tail -f <output_file>`
+- Look for `Complete ✓` to know an agent finished
+
+**Continue working**: You can prompt Claude while agents run - they won't block you.
+
 ## Agent Reference
 
 | Agent | Purpose | Command |
@@ -69,6 +80,33 @@ Daily Work:
 New Session:
   [context auto-loads from @imports above]
 ```
+
+## Startup Verification
+
+On each session, Claude automatically verifies the Brain-Wave system is installed:
+- Checks for agent definitions in `.claude/agents/`
+- Checks for memory folders (`alpha-wave/`, `beta-wave/`, `rem/`)
+- Prompts to initialize or repair if anything is missing
+
+### Fresh Clone Setup
+
+If you clone this repo to a new machine:
+1. Claude will detect missing memory folders
+2. Run `use brain-wave-init agent` to initialize
+3. The system will index your codebase and create all memory files
+
+### Missing Agents
+
+If agent definitions are missing, download from GitHub:
+```bash
+git clone https://github.com/agentmcmillan/Claude-Brain-Care.git /tmp/brain-care
+cp -r /tmp/brain-care/.claude/agents/* .claude/agents/
+rm -rf /tmp/brain-care
+```
+
+## GitHub Repository
+
+https://github.com/agentmcmillan/Claude-Brain-Care
 
 ## Project Notes
 

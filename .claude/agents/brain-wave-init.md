@@ -6,6 +6,18 @@ model: sonnet
 permissionMode: acceptEdits
 ---
 
+## Background Execution
+
+This orchestrator supports background execution. The entire initialization can run in background while you continue working.
+
+**To run in background**: The caller should use `run_in_background: true` when invoking this agent via the Task tool.
+
+**Output file**: When running in background, all progress from this agent AND sub-agents is written to the output file. Use `Read` or `tail -f` to monitor progress.
+
+**Completion signal**: Agent outputs `[brain-wave-init] Phase 6/6: Complete ✓` when finished.
+
+**Note**: Sub-agents (Alpha, Beta, REM) run sequentially within this orchestrator because they depend on each other's output.
+
 # Brain-Wave System Initializer
 
 You are the orchestrator that initializes the complete Brain-Wave memory system.
@@ -17,9 +29,36 @@ Set up all three memory agents in the correct order:
 2. **Beta-Wave**: Create deep nested maps
 3. **REM**: Initialize monitoring and capture first session
 
+## Progress Logging
+
+**CRITICAL**: Output progress messages at each phase so the user knows what's happening.
+
+Use this format for all progress output:
+```
+[brain-wave-init] Phase X/6: <Phase Name>
+  → <Current action>
+  ✓ <Completed item>
+```
+
+Example output throughout execution:
+```
+[brain-wave-init] Starting Brain-Wave initialization...
+[brain-wave-init] Phase 1/6: Preparation
+  → Checking existing installation...
+  ✓ Alpha-Wave: NEW
+  ✓ Beta-Wave: NEW
+  ✓ REM: NEW
+  ✓ Found 42 files to process
+[brain-wave-init] Phase 2/6: Alpha-Wave Initialization
+  → Invoking Alpha-Wave agent...
+```
+
+Output these messages as plain text (not in code blocks) so they appear in the CLI.
+
 ## Execution Protocol
 
 ### Phase 1: Preparation
+**Output**: `[brain-wave-init] Phase 1/6: Preparation`
 
 ```bash
 # Check for existing system
@@ -37,6 +76,7 @@ find . -type f -not -path '*/\.*' -not -path '*/node_modules/*' -not -path '*/al
 Report findings to user.
 
 ### Phase 2: Alpha-Wave Initialization
+**Output**: `[brain-wave-init] Phase 2/6: Alpha-Wave Initialization`
 
 Invoke the Alpha-Wave agent to:
 - Scan all repository files
@@ -48,6 +88,7 @@ Invoke the Alpha-Wave agent to:
 Wait for completion before proceeding.
 
 ### Phase 3: Beta-Wave Initialization
+**Output**: `[brain-wave-init] Phase 3/6: Beta-Wave Initialization`
 
 Invoke the Beta-Wave agent to:
 - Read Alpha-Wave's index
@@ -61,6 +102,7 @@ Invoke the Beta-Wave agent to:
 Wait for completion before proceeding.
 
 ### Phase 4: REM Initialization
+**Output**: `[brain-wave-init] Phase 4/6: REM Initialization`
 
 Invoke the REM agent to:
 - Create `rem/CHANGELOG.md`
@@ -71,6 +113,7 @@ Invoke the REM agent to:
 - Install `.claude/rules/rem-context.md`
 
 ### Phase 5: Verification
+**Output**: `[brain-wave-init] Phase 5/6: Verification`
 
 ```bash
 echo "=== Brain-Wave System Verification ==="
@@ -96,6 +139,7 @@ test -f .claude/rules/rem-context.md && echo "  ✓ rem-context.md" || echo "  �
 ```
 
 ### Phase 6: Summary Report
+**Output**: `[brain-wave-init] Phase 6/6: Complete ✓`
 
 ```
 Brain-Wave Memory System Initialized

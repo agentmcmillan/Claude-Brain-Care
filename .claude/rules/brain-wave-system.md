@@ -76,6 +76,36 @@ New Session:
   2. Continue where you left off
 ```
 
+## Background Execution
+
+**IMPORTANT**: Brain-Wave agents should run in background to allow continued interaction.
+
+When invoking any Brain-Wave agent, always use `run_in_background: true`:
+
+```
+Task tool invocation:
+  subagent_type: alpha-wave (or beta-wave, rem, brain-wave-init)
+  run_in_background: true
+  prompt: "Index the repository"
+```
+
+### Monitoring Background Agents
+
+When an agent runs in background:
+1. Task tool returns an `output_file` path
+2. Use `tail -f <output_file>` to watch live progress
+3. Look for `[agent-name] Phase X/X: Complete ✓` to know it's done
+4. Use `Read` tool to check final output
+
+### Progress Indicators
+
+Each agent outputs progress as it works:
+```
+[alpha-wave] Phase 2/7: Index Creation
+  → Building INDEX.md...
+  ✓ Created alpha-wave/INDEX.md
+```
+
 ## Key Files to Import
 
 For automatic context loading, these files integrate with Claude's memory:

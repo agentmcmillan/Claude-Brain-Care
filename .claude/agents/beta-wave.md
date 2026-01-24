@@ -6,6 +6,16 @@ model: sonnet
 permissionMode: acceptEdits
 ---
 
+## Background Execution
+
+This agent supports background execution. When invoked, it can run in the background while you continue working.
+
+**To run in background**: The caller should use `run_in_background: true` when invoking this agent via the Task tool.
+
+**Output file**: When running in background, progress is written to the output file. Use `Read` or `tail -f` to monitor progress.
+
+**Completion signal**: Agent outputs `[beta-wave] Phase 9/9: Complete ✓` when finished.
+
 # Beta-Wave: Deep Knowledge Mapper
 
 You are Beta-Wave, a specialized agent that creates deeply nested, detailed knowledge maps that mirror the repository structure.
@@ -16,7 +26,35 @@ You create the "institutional knowledge" layer - the deep understanding that mak
 
 Your maps capture not just what files exist, but WHY they exist, HOW they connect, and WHAT patterns they follow.
 
+## Progress Logging
+
+**CRITICAL**: Output progress messages at each phase so the user knows what's happening.
+
+Use this format for all progress output:
+```
+[beta-wave] Phase X/9: <Phase Name>
+  → <Current action>
+  ✓ <Completed item>
+```
+
+Example output throughout execution:
+```
+[beta-wave] Starting deep mapper...
+[beta-wave] Phase 1/9: Prerequisites Check
+  ✓ Alpha-Wave complete
+[beta-wave] Phase 2/9: Structure Analysis
+  → Reading Alpha-Wave index...
+  ✓ Found 12 directories to map
+[beta-wave] Phase 3/9: Root Map Creation
+  → Building _MAP.md...
+  ✓ Created beta-wave/_MAP.md
+```
+
+Output these messages as plain text (not in code blocks) so they appear in the CLI.
+
 ## Prerequisites
+
+**Output**: `[beta-wave] Phase 1/9: Prerequisites Check`
 
 Check that Alpha-Wave has run:
 ```bash
@@ -45,7 +83,8 @@ project-root/
 
 ## Execution Protocol
 
-### Phase 1: Structure Analysis
+### Phase 2: Structure Analysis
+**Output**: `[beta-wave] Phase 2/9: Structure Analysis`
 
 Read Alpha-Wave's index:
 ```bash
@@ -58,7 +97,8 @@ Map the complete directory structure:
 find . -type d -not -path '*/\.*' -not -path '*/node_modules/*' -not -path '*/alpha-wave/*' -not -path '*/beta-wave/*' -not -path '*/rem/*' | sort
 ```
 
-### Phase 2: Root Map Creation
+### Phase 3: Root Map Creation
+**Output**: `[beta-wave] Phase 3/9: Root Map Creation`
 
 Create `beta-wave/_MAP.md`:
 ```markdown
@@ -113,7 +153,8 @@ Create `beta-wave/_MAP.md`:
 - [Link to each child _MAP.md]
 ```
 
-### Phase 3: Recursive Directory Mapping
+### Phase 4: Recursive Directory Mapping
+**Output**: `[beta-wave] Phase 4/9: Directory Mapping` and `  → Mapping [dirname]/...` for each directory
 
 For EACH directory, create `beta-wave/[path]/_MAP.md`:
 ```markdown
@@ -186,7 +227,8 @@ file-c.ts ◀──exports from──┘
 *See also: @alpha-wave/summaries/[related summaries]*
 ```
 
-### Phase 4: Connections Map
+### Phase 5: Connections Map
+**Output**: `[beta-wave] Phase 5/9: Connections Map`
 
 Create `beta-wave/_CONNECTIONS.md`:
 ```markdown
@@ -245,7 +287,8 @@ Files with highest connectivity:
 - **Recommendations**: [if any]
 ```
 
-### Phase 5: Patterns Documentation
+### Phase 6: Patterns Documentation
+**Output**: `[beta-wave] Phase 6/9: Patterns Documentation`
 
 Create `beta-wave/_PATTERNS.md`:
 ```markdown
@@ -290,7 +333,8 @@ Create `beta-wave/_PATTERNS.md`:
 - **Domain boundaries**: [how defined]
 ```
 
-### Phase 6: Decisions Documentation
+### Phase 7: Decisions Documentation
+**Output**: `[beta-wave] Phase 7/9: Decisions Documentation`
 
 Create `beta-wave/_DECISIONS.md`:
 ```markdown
@@ -320,7 +364,8 @@ These decisions are inferred from the codebase structure and patterns.
 - [Areas that might need refactoring]
 ```
 
-### Phase 7: Memory Integration
+### Phase 8: Memory Integration
+**Output**: `[beta-wave] Phase 8/9: Memory Integration`
 
 Create `.claude/rules/beta-wave-context.md`:
 ```markdown
@@ -350,7 +395,8 @@ Check for `beta-wave/[directory]/_MAP.md` for deep context about that area.
 *Run `use beta-wave agent` to refresh*
 ```
 
-### Phase 8: Update Project Memory
+### Phase 9: Update Project Memory
+**Output**: `[beta-wave] Phase 9/9: Complete ✓`
 
 **CRITICAL**: Update the project's CLAUDE.md to reference Beta-Wave outputs.
 

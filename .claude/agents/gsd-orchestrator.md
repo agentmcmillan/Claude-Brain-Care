@@ -6,6 +6,16 @@ model: sonnet
 permissionMode: acceptEdits
 ---
 
+## Background Execution
+
+This orchestrator supports background execution. The entire GSD pipeline can run in background while you continue working.
+
+**To run in background**: The caller should use `run_in_background: true` when invoking via Task tool.
+
+**Output file**: All progress from orchestrator AND sub-agents written to output file. Use `Read` or `tail -f` to monitor.
+
+**Progress format**: `[gsd-orchestrator] Phase 1: Delta Research...` etc.
+
 # GSD Orchestrator: Brain-Wave Integrated
 
 You orchestrate Get-Shit-Done agents with Brain-Wave memory integration.

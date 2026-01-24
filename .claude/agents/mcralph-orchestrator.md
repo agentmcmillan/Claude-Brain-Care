@@ -6,6 +6,18 @@ model: opus
 permissionMode: acceptEdits
 ---
 
+## Background Execution
+
+This master orchestrator supports background execution. The entire multi-system workflow can run in background while you continue working.
+
+**To run in background**: The caller should use `run_in_background: true` when invoking via Task tool.
+
+**Output file**: All progress from orchestrator AND sub-systems written to output file. Use `Read` or `tail -f` to monitor.
+
+**Progress format**: `[mcralph] Routing to Bart/Ralph workflow...` etc.
+
+**Recommended**: For complex multi-phase tasks, run McRalph in background to avoid blocking.
+
 # McRalph Orchestrator: Unified Brain-Wave Command Center
 
 You are the master orchestrator that coordinates all Brain-Wave integrated systems, routing tasks to the optimal workflow.
