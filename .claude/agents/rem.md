@@ -14,7 +14,7 @@ This agent is designed for background execution. It should typically run in the 
 
 **Output file**: When running in background, progress is written to the output file. Use `Read` or `tail -f` to monitor progress.
 
-**Completion signal**: Agent outputs `[rem] Phase 10/10: Complete ✓` when finished.
+**Completion signal**: Agent outputs `[rem] Phase 11/11: Complete ✓` when finished.
 
 **Recommended**: Always run REM in background since it's a monitoring/sync agent.
 
@@ -49,7 +49,7 @@ How to rebuild context when starting fresh - loading relevant structured state f
 
 Use this format for all progress output:
 ```
-[rem] Phase X/10: <Phase Name>
+[rem] Phase X/11: <Phase Name>
   → <Current action>
   ✓ <Completed item>
 ```
@@ -57,13 +57,13 @@ Use this format for all progress output:
 Example output throughout execution:
 ```
 [rem] Starting repository monitor...
-[rem] Phase 1/10: Prerequisites Check
+[rem] Phase 1/11: Prerequisites Check
   ✓ Alpha-Wave: OK
   ✓ Beta-Wave: OK
-[rem] Phase 2/10: Change Detection
+[rem] Phase 2/11: Change Detection
   → Scanning for changes since last run...
   ✓ Found 3 modified files
-[rem] Phase 3/10: Session State Capture
+[rem] Phase 3/11: Chat Summary
   → Capturing current session...
   ✓ Created rem/sessions/2026-01-23-abc.md
 ```
@@ -91,6 +91,8 @@ project-root/
 │   ├── LAST-RUN.md            # Most recent run status (~30 lines)
 │   ├── sessions/
 │   │   └── [timestamp].md     # Session state snapshots
+│   ├── chats/
+│   │   └── [timestamp].md     # Chat summaries (intention/execution/issues)
 │   ├── discoveries/
 │   │   └── [topic].md         # Accumulated insights by topic
 │   └── restoration/
@@ -107,7 +109,7 @@ project-root/
 ## Execution Protocol
 
 ### Phase 1: Prerequisites Check
-**Output**: `[rem] Phase 1/10: Prerequisites Check`
+**Output**: `[rem] Phase 1/11: Prerequisites Check`
 
 ```bash
 # Check if Alpha-Wave and Beta-Wave have run
@@ -118,7 +120,7 @@ test -f beta-wave/_MAP.md && echo "Beta-Wave: OK" || echo "Beta-Wave: MISSING"
 If either is missing, report and suggest running them first.
 
 ### Phase 2: Change Detection
-**Output**: `[rem] Phase 2/10: Change Detection`
+**Output**: `[rem] Phase 2/11: Change Detection`
 
 ```bash
 # Git-based detection (if available)
@@ -135,8 +137,41 @@ Categorize changes:
 - **Deleted files**: Need removal from indexes + maps
 - **Moved files**: Need path updates across all systems
 
-### Phase 3: Session State Capture
-**Output**: `[rem] Phase 3/10: Session State Capture`
+### Phase 3: Chat Summary Capture
+**Output**: `[rem] Phase 3/11: Chat Summary`
+
+**CRITICAL**: Summarize the current Claude conversation.
+
+Create `rem/chats/[ISO-timestamp].md` (max 30 lines):
+```markdown
+# Chat: [timestamp]
+
+## Intention
+[What the user wanted to accomplish - 1-2 lines]
+
+## Execution
+[What was actually done - bullet list, max 5 items]
+- Action 1
+- Action 2
+
+## Issues
+[Problems encountered, if any - or "None"]
+
+## Outcome
+[Success/Partial/Failed] - [one line summary]
+
+## Files Changed
+[List of files modified this session]
+```
+
+**Rules for chat summaries:**
+- Be extremely concise
+- Focus on WHAT not HOW
+- Only log significant conversations (skip simple questions)
+- Link to relevant session file if exists
+
+### Phase 4: Session State Capture
+**Output**: `[rem] Phase 4/11: Session State Capture`
 
 Create `rem/sessions/[ISO-timestamp].md`:
 ```markdown
@@ -167,7 +202,7 @@ Create `rem/sessions/[ISO-timestamp].md`:
 ```
 
 ### Phase 4: Delta Updates
-**Output**: `[rem] Phase 4/10: Delta Updates - Alpha-Wave`
+**Output**: `[rem] Phase 5/11: Delta Updates - Alpha-Wave`
 
 #### Alpha-Wave Updates
 For each change detected:
@@ -177,7 +212,7 @@ For each change detected:
 4. Update `alpha-wave/STATE.md` with new checksum
 
 #### Beta-Wave Updates
-**Output**: `[rem] Phase 5/10: Delta Updates - Beta-Wave`
+**Output**: `[rem] Phase 6/11: Delta Updates - Beta-Wave`
 
 For each change detected:
 1. Update affected `beta-wave/[path]/_MAP.md` files
@@ -187,7 +222,7 @@ For each change detected:
 5. Remove `_MAP.md` for deleted directories
 
 ### Phase 6: Discovery Logging
-**Output**: `[rem] Phase 6/10: Discovery Logging`
+**Output**: `[rem] Phase 7/11: Discovery Logging`
 
 When significant patterns or insights are detected, log them:
 
@@ -214,7 +249,7 @@ Discovery categories:
 - `decisions.md` - inferred design decisions
 
 ### Phase 7: Restoration Protocol Update
-**Output**: `[rem] Phase 7/10: Restoration Protocol Update`
+**Output**: `[rem] Phase 8/11: Restoration Protocol Update`
 
 Update `rem/restoration/PROTOCOL.md`:
 ```markdown
@@ -255,7 +290,7 @@ Update `rem/restoration/PROTOCOL.md`:
 ```
 
 ### Phase 8: Memory Hook Update
-**Output**: `[rem] Phase 8/10: Memory Hook Update`
+**Output**: `[rem] Phase 9/11: Memory Hook Update`
 
 Update `.claude/rules/rem-context.md`:
 ```markdown
@@ -290,7 +325,7 @@ Check for `beta-wave/[area]/_MAP.md`
 ```
 
 ### Phase 9: Changelog Update
-**Output**: `[rem] Phase 9/10: Changelog Update`
+**Output**: `[rem] Phase 10/11: Changelog Update`
 
 Append to `rem/CHANGELOG.md`:
 ```markdown
@@ -323,7 +358,7 @@ All systems synchronized / Partial sync / Needs attention
 ```
 
 ### Phase 10: Last Run Update
-**Output**: `[rem] Phase 10/10: Complete ✓`
+**Output**: `[rem] Phase 11/11: Complete ✓`
 
 Update `rem/LAST-RUN.md`:
 ```markdown
