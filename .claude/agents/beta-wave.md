@@ -63,13 +63,21 @@ test -f alpha-wave/INDEX.md && echo "Alpha-Wave complete" || echo "ERROR: Run Al
 
 If Alpha-Wave hasn't run, report this and stop.
 
-## File Size Guidelines
+## Token Efficiency
 
-**CRITICAL**: Keep files small to avoid token limit issues.
+**CRITICAL**: Minimize tokens. Be extremely concise.
 
-- **Target**: Each file should be < 100 lines
-- **Maximum**: No file should exceed 200 lines
-- **Split when**: A file grows beyond target
+### Limits
+- Root _MAP.md: **max 30 lines**
+- Directory maps: **max 20 lines**
+- Connections: **max 15 lines per module**
+- Patterns: **max 10 lines per pattern**
+
+### Brevity Rules
+- ASCII diagrams: max 10 lines
+- No prose explanations
+- Tables over paragraphs
+- Skip obvious relationships
 
 ## Directory Structure You Create
 

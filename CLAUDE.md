@@ -47,6 +47,18 @@ use beta-wave agent     # Create maps (after alpha)
 use rem agent           # Sync & monitor
 ```
 
+## Permission Modes
+
+During initialization, you'll be asked to choose a permission mode:
+
+| Mode | Behavior |
+|------|----------|
+| `bypassPermissions` | No prompts - fully autonomous |
+| `acceptEdits` | Auto-accept file changes, prompt for bash (default) |
+| `default` | Prompt for all operations |
+
+Your choice is saved to `.claude/brain-wave-config.json` and applied to all agents.
+
 ## Background Execution
 
 All Brain-Wave agents run in background by default, allowing you to keep working while they process.

@@ -14,7 +14,7 @@ This orchestrator supports background execution. The entire initialization can r
 
 **Output file**: When running in background, all progress from this agent AND sub-agents is written to the output file. Use `Read` or `tail -f` to monitor progress.
 
-**Completion signal**: Agent outputs `[brain-wave-init] Phase 6/6: Complete ✓` when finished.
+**Completion signal**: Agent outputs `[brain-wave-init] Phase 7/7: Complete ✓` when finished.
 
 **Note**: Sub-agents (Alpha, Beta, REM) run sequentially within this orchestrator because they depend on each other's output.
 
@@ -35,7 +35,7 @@ Set up all three memory agents in the correct order:
 
 Use this format for all progress output:
 ```
-[brain-wave-init] Phase X/6: <Phase Name>
+[brain-wave-init] Phase X/7: <Phase Name>
   → <Current action>
   ✓ <Completed item>
 ```
@@ -43,13 +43,14 @@ Use this format for all progress output:
 Example output throughout execution:
 ```
 [brain-wave-init] Starting Brain-Wave initialization...
-[brain-wave-init] Phase 1/6: Preparation
+[brain-wave-init] Phase 0/7: Configuration
+  → Asking permission mode preference...
+  ✓ User selected: acceptEdits
+  ✓ Updated agent permissions
+[brain-wave-init] Phase 1/7: Preparation
   → Checking existing installation...
-  ✓ Alpha-Wave: NEW
-  ✓ Beta-Wave: NEW
-  ✓ REM: NEW
   ✓ Found 42 files to process
-[brain-wave-init] Phase 2/6: Alpha-Wave Initialization
+[brain-wave-init] Phase 2/7: Alpha-Wave Initialization
   → Invoking Alpha-Wave agent...
 ```
 
@@ -57,8 +58,33 @@ Output these messages as plain text (not in code blocks) so they appear in the C
 
 ## Execution Protocol
 
+### Phase 0: Configuration
+**Output**: `[brain-wave-init] Phase 0/7: Configuration`
+
+Before initializing, ask the user for their preferred permission mode using AskUserQuestion:
+
+**Question**: "How should Brain-Wave agents handle permissions?"
+
+**Options**:
+| Option | Description |
+|--------|-------------|
+| `bypassPermissions` | No prompts - agents run fully autonomously |
+| `acceptEdits` | Auto-accept file changes, prompt for bash (recommended) |
+| `default` | Prompt for all operations |
+
+Store the choice in `.claude/brain-wave-config.json`:
+```json
+{
+  "permissionMode": "acceptEdits",
+  "initialized": "2026-01-23T00:00:00Z",
+  "version": "1.0"
+}
+```
+
+Then update all agent definition files (`.claude/agents/*.md`) to use the chosen permission mode by editing the frontmatter.
+
 ### Phase 1: Preparation
-**Output**: `[brain-wave-init] Phase 1/6: Preparation`
+**Output**: `[brain-wave-init] Phase 1/7: Preparation`
 
 ```bash
 # Check for existing system
@@ -76,7 +102,7 @@ find . -type f -not -path '*/\.*' -not -path '*/node_modules/*' -not -path '*/al
 Report findings to user.
 
 ### Phase 2: Alpha-Wave Initialization
-**Output**: `[brain-wave-init] Phase 2/6: Alpha-Wave Initialization`
+**Output**: `[brain-wave-init] Phase 2/7: Alpha-Wave`
 
 Invoke the Alpha-Wave agent to:
 - Scan all repository files
@@ -88,7 +114,7 @@ Invoke the Alpha-Wave agent to:
 Wait for completion before proceeding.
 
 ### Phase 3: Beta-Wave Initialization
-**Output**: `[brain-wave-init] Phase 3/6: Beta-Wave Initialization`
+**Output**: `[brain-wave-init] Phase 3/7: Beta-Wave`
 
 Invoke the Beta-Wave agent to:
 - Read Alpha-Wave's index
@@ -102,7 +128,7 @@ Invoke the Beta-Wave agent to:
 Wait for completion before proceeding.
 
 ### Phase 4: REM Initialization
-**Output**: `[brain-wave-init] Phase 4/6: REM Initialization`
+**Output**: `[brain-wave-init] Phase 4/7: REM`
 
 Invoke the REM agent to:
 - Create `rem/CHANGELOG.md`
@@ -113,7 +139,7 @@ Invoke the REM agent to:
 - Install `.claude/rules/rem-context.md`
 
 ### Phase 5: Verification
-**Output**: `[brain-wave-init] Phase 5/6: Verification`
+**Output**: `[brain-wave-init] Phase 5/7: Verification`
 
 ```bash
 echo "=== Brain-Wave System Verification ==="
@@ -139,11 +165,15 @@ test -f .claude/rules/rem-context.md && echo "  ✓ rem-context.md" || echo "  �
 ```
 
 ### Phase 6: Summary Report
-**Output**: `[brain-wave-init] Phase 6/6: Complete ✓`
+**Output**: `[brain-wave-init] Phase 6/7: Summary` then `[brain-wave-init] Phase 7/7: Complete ✓`
 
 ```
 Brain-Wave Memory System Initialized
 =====================================
+
+Configuration:
+  - Permission mode: [user's choice]
+  - Config saved: .claude/brain-wave-config.json
 
 Alpha-Wave (Indexer):
   - Files indexed: [N]
