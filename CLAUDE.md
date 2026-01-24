@@ -58,6 +58,19 @@ All Brain-Wave agents run in background by default, allowing you to keep working
 
 **Continue working**: You can prompt Claude while agents run - they won't block you.
 
+## File Size Limits
+
+Brain-Wave creates many small files instead of large monolithic ones to avoid token limits.
+
+| Type | Max Lines | Strategy |
+|------|-----------|----------|
+| Index/Overview | 50 | Links to detail files |
+| Detail files | 100 | One topic/module per file |
+| Summaries | 50 | Essential info only |
+| Sessions | 50 | One per session |
+
+Files are split into subdirectories when they would exceed limits.
+
 ## Agent Reference
 
 | Agent | Purpose | Command |

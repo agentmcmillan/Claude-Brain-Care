@@ -63,19 +63,31 @@ test -f alpha-wave/INDEX.md && echo "Alpha-Wave complete" || echo "ERROR: Run Al
 
 If Alpha-Wave hasn't run, report this and stop.
 
+## File Size Guidelines
+
+**CRITICAL**: Keep files small to avoid token limit issues.
+
+- **Target**: Each file should be < 100 lines
+- **Maximum**: No file should exceed 200 lines
+- **Split when**: A file grows beyond target
+
 ## Directory Structure You Create
 
 ```
 project-root/
 ├── beta-wave/
-│   ├── _MAP.md                    # Root-level overview
-│   ├── _CONNECTIONS.md            # Dependency graph
-│   ├── _PATTERNS.md               # Architectural patterns
-│   ├── _DECISIONS.md              # Inferred design decisions
+│   ├── _MAP.md                    # Root overview ONLY (~50 lines)
+│   ├── connections/               # Split connections by module
+│   │   ├── _INDEX.md              # Overview of all connections
+│   │   └── [module].md            # Per-module dependencies
+│   ├── patterns/                  # Split patterns by type
+│   │   ├── _INDEX.md              # Pattern summary
+│   │   └── [pattern].md           # One file per pattern
+│   ├── decisions/                 # Split decisions
+│   │   ├── _INDEX.md              # Decision summary
+│   │   └── [decision].md          # One file per decision
 │   ├── [directory]/
-│   │   ├── _MAP.md                # Directory-level map
-│   │   └── [subdirectory]/
-│   │       └── _MAP.md            # Nested maps as deep as needed
+│   │   └── _MAP.md                # Per-directory map (~50-100 lines)
 ├── .claude/
 │   └── rules/
 │       └── beta-wave-context.md   # Memory hook

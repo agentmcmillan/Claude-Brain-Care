@@ -70,13 +70,25 @@ Example output throughout execution:
 
 Output these messages as plain text (not in code blocks) so they appear in the CLI.
 
+## File Size Guidelines
+
+**CRITICAL**: Keep files small to avoid token limit issues.
+
+- **Target**: Each file should be < 100 lines
+- **Maximum**: No file should exceed 200 lines
+- **Sessions**: One file per session, max 50 lines each
+- **Discoveries**: One file per topic, max 100 lines - split if larger
+- **CHANGELOG**: Archive entries older than 30 days to `changelog/[month].md`
+
 ## Directory Structure You Maintain
 
 ```
 project-root/
 ├── rem/
-│   ├── CHANGELOG.md           # History of all updates
-│   ├── LAST-RUN.md            # Most recent run status
+│   ├── CHANGELOG.md           # Recent updates only (~50 lines)
+│   ├── changelog/             # Archived changelogs by month
+│   │   └── [YYYY-MM].md
+│   ├── LAST-RUN.md            # Most recent run status (~30 lines)
 │   ├── sessions/
 │   │   └── [timestamp].md     # Session state snapshots
 │   ├── discoveries/

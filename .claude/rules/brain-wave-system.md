@@ -7,6 +7,24 @@ paths:
 
 This project uses a three-agent memory system for persistent context across sessions.
 
+## File Size Rules
+
+**CRITICAL**: All Brain-Wave files must stay small to avoid token limits.
+
+| File Type | Target | Maximum |
+|-----------|--------|---------|
+| Index files | 50 lines | 100 lines |
+| Topic files | 50 lines | 100 lines |
+| Summaries | 50 lines | 100 lines |
+| Maps | 100 lines | 200 lines |
+| Sessions | 30 lines | 50 lines |
+| Discoveries | 50 lines | 100 lines |
+
+**When files grow too large:**
+1. Split into subdirectory with multiple smaller files
+2. Create an `_INDEX.md` that links to the parts
+3. Archive old content (sessions, changelog entries)
+
 ## The Agents
 
 ### Alpha-Wave (Indexer)

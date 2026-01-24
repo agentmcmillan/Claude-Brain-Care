@@ -33,15 +33,34 @@ Create and maintain the `alpha-wave/` folder containing:
 2. Individual file summaries
 3. Memory hooks that integrate with `.claude/` system
 
+## File Size Guidelines
+
+**CRITICAL**: Keep files small and modular for efficient loading.
+
+- **Target**: Each file should be < 200 lines
+- **Maximum**: No file should exceed 500 lines
+- **Split when**: A file grows beyond 200 lines
+
+If a section would make a file too large, split it into a subdirectory with multiple smaller files.
+
 ## Directory Structure You Create
 
 ```
 project-root/
 ├── alpha-wave/
-│   ├── INDEX.md              # Master index with file tree
-│   ├── TOPICS.md             # Topic-based categorization
+│   ├── INDEX.md              # Overview only (~50 lines) - links to details
+│   ├── index/                # Detailed indexes split by category
+│   │   ├── core.md           # Entry points, main modules
+│   │   ├── source.md         # Source files by directory
+│   │   ├── config.md         # Configuration files
+│   │   ├── tests.md          # Test files
+│   │   └── assets.md         # Static assets, docs
+│   ├── TOPICS.md             # Topic overview (~50 lines) - links to details
+│   ├── topics/               # Per-topic details
+│   │   ├── [topic].md        # One file per major topic
+│   │   └── ...
 │   ├── summaries/
-│   │   └── [file]-summary.md # Per-file summaries
+│   │   └── [file]-summary.md # Per-file summaries (keep < 100 lines each)
 │   └── STATE.md              # Current state snapshot
 ├── .claude/
 │   └── rules/
@@ -97,100 +116,111 @@ Categorize files:
 ### Phase 2: Index Creation
 **Output**: `[alpha-wave] Phase 2/7: Index Creation`
 
-Create `alpha-wave/INDEX.md`:
+Create a **lightweight** `alpha-wave/INDEX.md` (keep under 50 lines):
 ```markdown
 # Repository Index
 > Generated: [ISO timestamp]
 > Files: [count] | Directories: [count]
-> Last commit: [hash] [message]
 
 ## Quick Reference
 - Entry point: `[path]`
 - Main config: `[path]`
-- Test command: `[command]`
-- Build command: `[command]`
+- Test: `[command]` | Build: `[command]`
 
-## File Tree
+## Index Files
+- Core files: [index/core.md](index/core.md)
+- Source code: [index/source.md](index/source.md)
+- Configuration: [index/config.md](index/config.md)
+- Tests: [index/tests.md](index/tests.md)
+
+## Topics
+See [TOPICS.md](TOPICS.md) for conceptual navigation.
 ```
-[ASCII tree with annotations]
+
+Then create **separate files** in `alpha-wave/index/`:
+
+**index/core.md** (entry points, main modules):
+```markdown
+# Core Files
+| File | Purpose | Lines |
+|------|---------|-------|
+[max 30 rows per file - split further if needed]
 ```
 
-## By Type
-### Core Files
-| File | Purpose | Lines | Dependencies |
-|------|---------|-------|--------------|
-
-### Source Files
-[grouped by directory/module]
-
-### Configuration
-[list with purposes]
+**index/source.md** (split by directory if >30 files):
+```markdown
+# Source Files: [directory]
+| File | Purpose | Lines |
+|------|---------|-------|
 ```
+
+**index/config.md**, **index/tests.md**, **index/assets.md** - same pattern.
 
 ### Phase 3: Topic Mapping
 **Output**: `[alpha-wave] Phase 3/7: Topic Mapping`
 
-Create `alpha-wave/TOPICS.md`:
+Create a **lightweight** `alpha-wave/TOPICS.md` (keep under 50 lines):
 ```markdown
 # Topic Map
 > Cross-references for conceptual navigation
 
-## Authentication
+## Topics
+| Topic | Files | Details |
+|-------|-------|---------|
+| Authentication | 5 | [topics/auth.md](topics/auth.md) |
+| Database | 8 | [topics/database.md](topics/database.md) |
+| API | 12 | [topics/api.md](topics/api.md) |
+[one row per topic - link to details]
+```
+
+Then create **separate files** in `alpha-wave/topics/`:
+
+**topics/auth.md**:
+```markdown
+# Topic: Authentication
 - Implementation: `src/auth/`
 - Tests: `tests/auth/`
 - Config: `.env.example` (AUTH_* vars)
-- Docs: `docs/auth.md`
-
-## Database
-- Models: `src/models/`
-- Migrations: `db/migrations/`
-- Seeds: `db/seeds/`
-
-## API
-- Routes: `src/routes/`
-- Controllers: `src/controllers/`
-- Middleware: `src/middleware/`
-
-[Continue for each logical topic area...]
+- Key files: [list 3-5 most important]
 ```
+
+**topics/database.md**, **topics/api.md**, etc. - same pattern.
+
+**Rule**: One topic per file, max 50 lines each.
 
 ### Phase 4: Summarization
 **Output**: `[alpha-wave] Phase 4/7: Summarization` and `  → Summarizing [filename]...` for each file
 
+**Keep summaries SHORT** - max 50 lines each.
+
 For each significant file, create `alpha-wave/summaries/[name]-summary.md`:
 ```markdown
 # [filename]
-> Path: [relative path]
-> Type: [language/format]
-> Lines: [count]
-> Last modified: [date if available]
+> Path: [relative path] | Lines: [count] | Type: [language]
 
 ## Purpose
-[1-2 sentences]
+[1-2 sentences MAX]
 
-## Key Exports/Functions
-- `functionName(args)`: [what it does]
-- `ClassName`: [what it represents]
+## Exports
+- `functionName()`: [brief]
+- `ClassName`: [brief]
 
 ## Dependencies
-- Internal: [list project imports]
-- External: [list package imports]
-
-## Used By
-- [files that import this]
-
-## Patterns
-- [design patterns observed]
+Internal: `file1`, `file2` | External: `pkg1`, `pkg2`
 
 ## Notes
-- [TODOs, FIXMEs, concerns]
+[Only if critical - TODOs, issues]
 ```
 
-Skip summarizing:
-- Binary files
-- Lock files (package-lock.json, yarn.lock)
-- Generated files (dist/, build/, .next/)
-- Node modules
+**Skip summarizing**:
+- Binary files, lock files, generated files, node_modules
+- Files under 20 lines (just list in index)
+- Config files (just note purpose in index)
+
+**For large modules** (>500 lines): Create `summaries/[module]/` subdirectory with:
+- `overview.md` (50 lines max)
+- `functions.md` (key functions only)
+- `types.md` (if many types)
 
 ### Phase 5: Memory Integration
 **Output**: `[alpha-wave] Phase 5/7: Memory Integration`
