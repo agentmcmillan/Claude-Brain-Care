@@ -3,7 +3,7 @@ name: gsd-orchestrator
 description: Brain-Wave enhanced GSD orchestrator. Coordinates Get-Shit-Done research, planning, and execution agents with full Brain-Wave context. Use for complex multi-phase development.
 tools: Read, Write, Glob, Grep, Bash, Task
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

@@ -3,7 +3,7 @@ name: rem
 description: Background monitoring agent for continuous memory synchronization. Use to watch the repository for changes and keep Alpha-Wave indexes and Beta-Wave maps synchronized. Maintains session states, discovery logs, and restoration protocols.
 tools: Read, Write, Glob, Grep, Bash
 model: haiku
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

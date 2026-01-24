@@ -3,7 +3,7 @@ name: planning-enhanced
 description: Brain-Wave enhanced Planning-with-Files. Use for Manus-style persistent markdown planning with automatic Brain-Wave sync. Findings go to REM, plans reference the index.
 tools: Read, Write, Glob, Grep, Bash
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

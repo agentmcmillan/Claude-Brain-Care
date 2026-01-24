@@ -3,7 +3,7 @@ name: brain-wave-init
 description: Initialize the complete Brain-Wave memory system. Use when setting up a new project or resetting the memory system. Runs Alpha-Wave, then Beta-Wave, then REM in sequence.
 tools: Read, Write, Glob, Grep, Bash, Task
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

@@ -3,7 +3,7 @@ name: bart-enhanced
 description: Brain-Wave enhanced Bart planning agent. Use for feature planning with full codebase context. Reads Brain-Wave memory before research, writes discoveries back to REM.
 tools: Read, Write, Glob, Grep, Bash, Task
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

@@ -3,7 +3,7 @@ name: mcralph-orchestrator
 description: Master orchestrator that coordinates all Brain-Wave integrated systems. Use to intelligently route tasks to the best agent combination. Maintains unified memory across Bart, Ralph, GSD, and Planning workflows.
 tools: Read, Write, Glob, Grep, Bash, Task
 model: opus
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

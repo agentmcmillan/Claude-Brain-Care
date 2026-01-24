@@ -3,7 +3,7 @@ name: ralph-enhanced
 description: Brain-Wave enhanced Ralph execution agent. Use to execute prd.json stories with full codebase context. Provides Brain-Wave context to workers, captures learnings to REM.
 tools: Read, Write, Glob, Grep, Bash, Task
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

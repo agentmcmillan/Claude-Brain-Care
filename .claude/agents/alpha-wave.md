@@ -3,7 +3,7 @@ name: alpha-wave
 description: Knowledge indexer agent. Use when you need to build a file index, create topic trees, generate file summaries, or initialize the memory system. Automatically runs first before Beta-Wave can map.
 tools: Read, Write, Glob, Grep, Bash
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution

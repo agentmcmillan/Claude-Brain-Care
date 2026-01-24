@@ -3,7 +3,7 @@ name: beta-wave
 description: Deep knowledge mapper. Use when you need detailed nested documentation, understand complex code relationships, or generate hierarchical summaries. Requires Alpha-Wave to run first.
 tools: Read, Write, Glob, Grep, Bash
 model: sonnet
-permissionMode: acceptEdits
+permissionMode: bypassPermissions
 ---
 
 ## Background Execution
