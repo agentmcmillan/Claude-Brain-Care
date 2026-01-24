@@ -159,8 +159,10 @@ def execute_task(task):
 ## File Structure
 
 ```
-your-project/
+Claude-Brain-Care/
 ├── CLAUDE.md                           # Project memory (auto-updated)
+├── README.md                           # This file
+├── LICENSE                             # MIT with attribution
 ├── .claude/
 │   ├── agents/
 │   │   ├── alpha-wave.md               # Core: Indexer
@@ -175,14 +177,29 @@ your-project/
 │   └── rules/
 │       └── brain-wave-system.md        # System documentation
 ├── integrations/
+│   ├── bart/                           # Bart planning skill
+│   │   └── SKILL.md
+│   ├── ralph/                          # Ralph execution skill
+│   │   ├── SKILL.md
+│   │   └── AGENTS.md                   # Full Ralph documentation
+│   ├── ralph-master/                   # Ralph orchestrator skill
+│   │   └── SKILL.md
+│   ├── prompts/                        # Worker prompts
+│   │   ├── ralph-worker.md
+│   │   └── bart-researcher.md
+│   ├── prd/                            # PRD templates
+│   │   └── SKILL.md
 │   ├── gsd/                            # Get-Shit-Done agents
 │   │   ├── gsd-project-researcher.md
 │   │   ├── gsd-planner.md
 │   │   ├── gsd-executor.md
+│   │   ├── gsd-verifier.md
+│   │   ├── gsd-debugger.md
 │   │   └── ...
-│   └── planning-with-files/            # Planning skill
+│   └── planning-with-files/            # Manus-style planning
 │       ├── SKILL.md
-│       └── templates/
+│       ├── templates/
+│       └── scripts/
 ├── alpha-wave/                         # Generated: File indexes
 ├── beta-wave/                          # Generated: Architecture maps
 └── rem/                                # Generated: Sessions & discoveries
