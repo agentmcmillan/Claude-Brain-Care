@@ -42,6 +42,26 @@
 
 - [2026-02-12 01:36:12] Edited: `skills/README.md`
 
+- [2026-02-12 01:49:52] Created/Wrote: `.claude/agents/memory-decay.md`
+
+- [2026-02-12 01:50:05] Created/Wrote: `skills/memory-decay/SKILL.md`
+
+- [2026-02-12 01:50:52] Created/Wrote: `.claude/agents/beads-tasks.md`
+
+- [2026-02-12 01:51:06] Created/Wrote: `skills/beads-tasks/SKILL.md`
+
+- [2026-02-12 01:52:25] Created/Wrote: `integrations/gastown/README.md`
+
+- [2026-02-12 01:52:46] Created/Wrote: `integrations/gastown/create-agent.sh`
+
+- [2026-02-12 01:53:43] Created/Wrote: `ROADMAP.md`
+
+- [2026-02-12 01:53:55] Edited: `integrations/clawhub/manifest.json`
+
+- [2026-02-12 01:53:56] Edited: `integrations/clawhub/manifest.json`
+
+- [2026-02-12 01:53:58] Edited: `integrations/clawhub/manifest.json`
+
 ## 2026-01-24
 - Fresh install with bypassPermissions
 - Created all index, map, and session files

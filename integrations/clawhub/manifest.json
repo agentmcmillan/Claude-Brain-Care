@@ -69,6 +69,16 @@
       "name": "shared-memory",
       "path": "skills/shared-memory",
       "category": "collaboration"
+    },
+    {
+      "name": "memory-decay",
+      "path": "skills/memory-decay",
+      "category": "maintenance"
+    },
+    {
+      "name": "beads-tasks",
+      "path": "skills/beads-tasks",
+      "category": "tasks"
     }
   ],
   "dependencies": {
@@ -81,7 +91,9 @@
     "gsd-orchestrator": ["alpha-wave", "beta-wave"],
     "mcralph-orchestrator": ["alpha-wave", "beta-wave", "rem"],
     "planning-enhanced": ["alpha-wave"],
-    "shared-memory": ["rem"]
+    "shared-memory": ["rem"],
+    "memory-decay": ["rem"],
+    "beads-tasks": []
   },
   "installOrder": [
     "brain-wave-init",
@@ -93,7 +105,9 @@
     "planning-enhanced",
     "gsd-orchestrator",
     "mcralph-orchestrator",
-    "shared-memory"
+    "shared-memory",
+    "memory-decay",
+    "beads-tasks"
   ],
   "metadata": {
     "minOpenClawVersion": "1.0.0",

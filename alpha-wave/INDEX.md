@@ -5,6 +5,10 @@ Entry: `CLAUDE.md` | Config: `.claude/`
 Test: N/A | Build: N/A
 
 ## Recent Files
+- `integrations/gastown/create-agent.sh` (auto-indexed)
+- `integrations/gastown/README.md` (auto-indexed)
+- `skills/beads-tasks/SKILL.md` (auto-indexed)
+- `skills/memory-decay/SKILL.md` (auto-indexed)
 - `skills/shared-memory/SKILL.md` (auto-indexed)
 - `ROADMAP.md` (auto-indexed)
 - `skills/README.md` (auto-indexed)

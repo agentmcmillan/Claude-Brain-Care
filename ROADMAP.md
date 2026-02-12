@@ -1,276 +1,276 @@
 # Brain-Wave Roadmap
 
-Features inspired by top OpenClaw skills and community patterns.
+Features inspired by top OpenClaw skills, research papers, and community patterns.
 
-## Inspired By
+## Research Sources
+
+| Source | Key Concept | Applied |
+|--------|-------------|---------|
+| [AI Maker Substack](https://aimaker.substack.com/p/ultimate-guide-to-claude-project-memory-system-prompt) | Friction-driven memory | ✅ friction.md |
+| [Gastown](https://github.com/steveyegge/gastown) | Git worktree isolation | ✅ integrations/gastown/ |
+| [Beads](https://github.com/steveyegge/beads) | Hash-based task IDs | ✅ beads-tasks |
+| [MemOS](https://github.com/MemTensor/MemOS) | Memory cubes & feedback | 🔜 v1.6 |
+| [Awesome-AI-Memory](https://github.com/IAAR-Shanghai/Awesome-AI-Memory) | Memory taxonomy | 📚 Reference |
+| [TME Paper](https://arxiv.org/html/2504.08525v3) | Task Memory Tree | 🔜 v1.7 |
+| [Token Budgeting](https://www.getmaxim.ai/articles/context-engineering-for-ai-agents-production-optimization-strategies/) | Context allocation | 🔜 v1.8 |
+
+## Skill Inspirations
 
 | Source Skill | Feature | Status |
 |--------------|---------|--------|
-| cognitive-memory | Multi-store memory layers | ✅ Implemented (4 layers) |
-| shared-memory | Cross-instance context sharing | 🔜 Planned |
-| quests | Guided multi-step processes | 🔜 Planned |
-| summarize | Content summarization | ✅ Partial (alpha summaries) |
-| trellis | Structured specs & workflows | 🔜 Planned |
-| identity-manager | Agent identity persistence | 🔜 Planned |
+| cognitive-memory | Multi-store memory layers | ✅ Implemented |
+| shared-memory | Cross-instance context sharing | ✅ Implemented |
+| quests | Guided multi-step processes | 🔜 v1.3 |
+| summarize | Content summarization | ✅ alpha summaries |
+| trellis | Structured specs & workflows | 🔜 v1.5 |
+| identity-manager | Agent identity persistence | ✅ agent-id.json |
 
 ---
 
-## v1.1 - Hooks Integration
+## ✅ v1.1 - Implemented
 
-**Status**: In Development
+### Friction Log System
+Capture gaps between AI output and preferences.
 
-Claude Code hooks for automatic Brain-Wave sync.
+```
+rem/discoveries/friction.md
+```
 
-### Pre-Session Hook
+Pattern: What I got → What I needed → The gap → Instruction added
+
+### Hash-Based Session IDs
+Beads-style IDs prevent merge conflicts.
+
+```
+bw-a1b2c instead of 2026-02-11-session.md
+```
+
+### Memory Decay Agent
+Auto-compact old sessions.
+
+```
+/memory-decay
+
+< 7 days:  Full detail
+7-30 days: Summarized
+30-90d:    Minimal
+90+ days:  Archived
+```
+
+### Beads-Tasks System
+Dependency-aware task tracking.
+
+```
+/tasks ready    # Show unblocked tasks
+/tasks add      # Create with hash ID
+/tasks done     # Complete and unblock dependents
+```
+
+### Gastown Integration
+Git worktree isolation for parallel agents.
+
 ```bash
-# .claude/hooks/pre-session.sh
-# Auto-load Brain-Wave context on session start
-cat rem/restoration/PROTOCOL.md 2>/dev/null
-```
-
-### Post-Edit Hook
-```bash
-# .claude/hooks/post-edit.sh
-# Track changed files for next REM sync
-echo "$FILE_PATH" >> .brain-wave-pending
-```
-
-### Session-End Hook
-```bash
-# .claude/hooks/session-end.sh
-# Auto-run REM on session end
-# Requires: bypassPermissions mode
-```
-
----
-
-## v1.2 - Shared Memory
-
-**Inspiration**: shared-memory skill
-
-Share Brain-Wave context between Claude instances.
-
-### Use Cases
-- Team projects with multiple developers using Claude
-- Syncing context across machines
-- Collaborative AI-assisted development
-
-### Proposed Structure
-```
-rem/
-├── shared/
-│   ├── exports/           # Shareable context snapshots
-│   │   └── [timestamp].json
-│   └── imports/           # Received context
-│       └── [source].json
-└── sync/
-    ├── peers.json         # Known peer instances
-    └── conflicts.md       # Merge conflicts log
-```
-
-### Sync Protocol
-```
-1. Export: REM creates shareable snapshot
-2. Transfer: Git push/pull or direct share
-3. Import: REM merges incoming context
-4. Resolve: Conflicts logged for review
+./integrations/gastown/create-agent.sh agent-auth feature
+cd .worktrees/agent-auth
+# Agent works in isolation
 ```
 
 ---
 
-## v1.3 - Quests System
+## ✅ v1.2 - Implemented
 
-**Inspiration**: quests skill
+### Shared Memory
+Cross-instance context sharing.
 
-Guided multi-step workflows with progress tracking.
+```
+/shared-memory export   # Create snapshot
+/shared-memory import   # Merge external context
+/shared-memory sync     # Sync with peers
+```
+
+Structure:
+```
+rem/shared/exports/     # Your snapshots
+rem/shared/imports/     # From others
+rem/sync/peers.json     # Peer registry
+```
+
+---
+
+## 🔜 v1.3 - Quests System
+
+Guided multi-step workflows.
 
 ### Proposed Quests
+- `new-project`: Initialize Brain-Wave
+- `feature`: Plan → Build → Test → Ship
+- `refactor`: Safe refactoring workflow
+- `debug`: Systematic debugging
 
-#### Quest: New Project Setup
+### Quest Format
 ```markdown
-# Quest: Initialize New Project
+# Quest: Build Feature
 
 ## Steps
-1. [ ] Create CLAUDE.md with project description
-2. [ ] Run `use brain-wave-init agent`
-3. [ ] Review generated architecture maps
-4. [ ] Add project-specific notes to discoveries
-5. [ ] Commit Brain-Wave files
+1. [ ] /bart new
+2. [ ] /bart create-prd
+3. [ ] /ralph
+4. [ ] /rem
 
-## Progress: 0/5
-```
-
-#### Quest: Feature Development
-```markdown
-# Quest: Build [Feature Name]
-
-## Steps
-1. [ ] Run `/bart new` to plan feature
-2. [ ] Review and refine requirements
-3. [ ] Run `/bart create-prd` to generate stories
-4. [ ] Run `/ralph` to execute stories
-5. [ ] Run `use rem agent` to capture learnings
-6. [ ] Commit changes with context
-
-## Progress: 0/6
-```
-
-### Quest Runner Agent
-```yaml
----
-name: quest-runner
-description: Guide through multi-step Brain-Wave workflows
----
-
-Available quests:
-- new-project: Initialize Brain-Wave for new project
-- feature: Plan and build a feature
-- refactor: Guided refactoring workflow
-- debug: Systematic debugging quest
+Progress: 0/4
 ```
 
 ---
 
-## v1.4 - Cognitive Memory
+## 🔜 v1.4 - Cognitive Memory
 
-**Inspiration**: cognitive-memory skill
-
-Enhanced memory with human-like characteristics.
+Human-like memory characteristics (from cognitive-memory skill).
 
 ### Memory Types
+| Type | Analog | Location |
+|------|--------|----------|
+| Working | Current focus | rem/sessions/ |
+| Episodic | Past events | rem/chats/ |
+| Semantic | Facts | alpha-wave/ |
+| Procedural | How-to | beta-wave/_PATTERNS.md |
 
-| Type | Human Analog | Brain-Wave Mapping |
-|------|--------------|-------------------|
-| Working | Current focus | `rem/sessions/` |
-| Episodic | Past events | `rem/chats/` |
-| Semantic | Facts & concepts | `alpha-wave/`, `beta-wave/` |
-| Procedural | How-to knowledge | `beta-wave/_PATTERNS.md` |
-
-### Proposed Enhancements
-
-#### Forgetting Curve
-```markdown
-## Memory Decay
-- Recent sessions: Full detail
-- 7+ days: Summarized
-- 30+ days: Key points only
-- 90+ days: Archived or deleted
-```
-
-#### Importance Scoring
-```markdown
-## Memory Priority
-Files touched frequently: High priority
-Files with many dependents: High priority
-Config files: Medium priority
-Test files: Low priority
-```
-
-#### Contextual Retrieval
-```markdown
-## Smart Loading
-When working on auth:
-- Load beta-wave/src/auth/_MAP.md
-- Load relevant discoveries
-- Skip unrelated context
-```
+### Importance Scoring
+Prioritize memory by:
+- Touch frequency
+- Dependent count
+- Recency
 
 ---
 
-## v1.5 - Trellis Integration
-
-**Inspiration**: trellis skill
+## 🔜 v1.5 - Trellis Integration
 
 Structured specs and workflow templates.
 
-### Spec Templates
-
-#### API Endpoint Spec
-```markdown
-# Spec: [Endpoint Name]
-
-## Endpoint
-- Method: POST
-- Path: /api/v1/[resource]
-
-## Request
-```json
-{
-  "field": "type"
-}
-```
-
-## Response
-```json
-{
-  "id": "string",
-  "created": "timestamp"
-}
-```
-
-## Brain-Wave Context
-- Related files: @alpha-wave/INDEX.md
-- Patterns: @beta-wave/_PATTERNS.md
-```
-
-#### Component Spec
-```markdown
-# Spec: [Component Name]
-
-## Props
-| Prop | Type | Required | Default |
-|------|------|----------|---------|
-
-## State
-[state management approach]
-
-## Brain-Wave Context
-- Similar components: [from index]
-- UI patterns: [from patterns]
-```
+### Spec Types
+- API Endpoint Spec
+- Component Spec
+- Migration Spec
+- Test Plan Spec
 
 ---
 
-## v2.0 - OpenClaw Gateway Integration
+## 🔜 v1.6 - MemOS Concepts
 
-**Future Vision**: Full OpenClaw integration.
+From [MemOS](https://github.com/MemTensor/MemOS):
 
-### Multi-Channel Memory
+### Memory Cubes
+Isolated, composable knowledge bases.
+
 ```
-WhatsApp session → Brain-Wave context
-Telegram session → Same Brain-Wave context
-Discord session → Same Brain-Wave context
+brain-care/           # Main cube
+├── projects/
+│   ├── auth/         # Auth project cube
+│   └── payments/     # Payments project cube
 ```
 
-### Persistent Identity
+### Memory Feedback
+Natural language refinement:
+> "That discovery about JWT was wrong - we actually use sessions"
+
+Updates memory in place.
+
+---
+
+## 🔜 v1.7 - Task Memory Tree
+
+From [TME Paper](https://arxiv.org/html/2504.08525v3):
+
+### Hierarchical Task Structure
+```
+Task Root
+├── Subtask A (done)
+│   └── Action 1, 2, 3
+├── Subtask B (in progress)
+│   └── Action 1, 2
+└── Subtask C (blocked by B)
+```
+
+### Dynamic Prompt Synthesis
+Only include active path in context (19% token savings).
+
+### Relationship Inference
+- Dependency (A blocks B)
+- Replacement (B supersedes A)
+- Merging (A + B → C)
+- Rollback (revert to A)
+
+---
+
+## 🔜 v1.8 - Token Budgeting
+
+From [context engineering research](https://www.getmaxim.ai/articles/context-engineering-for-ai-agents-production-optimization-strategies/):
+
+### Budget Allocation
+```
+Tool context:     15-20%
+Knowledge:        30-40%
+History:          20-30%
+Buffer reserve:   10-15%
+```
+
+### Dynamic Allocation
+Adapt based on:
+- Query complexity
+- User tier
+- Context freshness
+
+### Context Lifecycle
+- Load → Use → Compress → Archive
+- Active management through execution
+
+---
+
+## 🔜 v2.0 - OpenClaw Gateway
+
+Full OpenClaw integration for multi-channel memory.
+
+### Multi-Channel Sessions
+```
+WhatsApp → Brain-Wave
+Telegram → Same context
+Discord  → Same context
+```
+
+### Persistent Agent Identity
 ```yaml
 agent:
   name: "Project Assistant"
   identity: "brain-wave-main"
   memory: "./brain-wave/"
-  channels:
-    - whatsapp
-    - slack
-    - telegram
 ```
 
-### Session Continuity
-```
-Channel A: "Working on auth module"
-  → Brain-Wave captures context
+---
 
-Channel B (later): "Continue auth work"
-  → Brain-Wave restores context automatically
-```
+## Memory Taxonomy Reference
+
+From [Awesome-AI-Memory](https://github.com/IAAR-Shanghai/Awesome-AI-Memory):
+
+### Memory Dimensions
+| Dimension | Spectrum |
+|-----------|----------|
+| Access | Working ↔ Archived |
+| Structure | Structured ↔ Unstructured |
+| Scope | Personal ↔ Public |
+| Validity | Permanent ↔ Time-sensitive |
+
+### Core Operations
+- Write (store new)
+- Retrieve (recall)
+- Update (modify)
+- Delete (forget)
+- Compress (summarize)
 
 ---
 
 ## Contributing
 
-Ideas welcome. Open an issue or PR to propose features.
-
-Priority given to features that:
-1. Reduce context loss
-2. Improve development flow
-3. Enable collaboration
-4. Maintain simplicity
+Ideas welcome. Priority given to:
+1. Token efficiency
+2. Context persistence
+3. Multi-agent coordination
+4. Developer experience
