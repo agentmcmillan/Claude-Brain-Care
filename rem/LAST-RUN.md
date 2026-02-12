@@ -1,12 +1,16 @@
-# Last Run
-2026-01-24T06:34:00Z
+# Last Run State
 
-## Status
-| System | Status |
-|--------|--------|
-| Alpha | OK |
-| Beta | OK |
-| REM | OK |
+**Updated**: 2026-02-12 01:36:12
+**Last Tool**: Edit
+**Last File**: skills/README.md
 
-## Changes
-Fresh installation - all files created.
+## Session Info
+
+This file is auto-updated by the brain-wave-sync hook.
+Check `rem/sessions/` for full session history.
+
+## Quick Actions
+
+- View changelog: `rem/CHANGELOG.md`
+- Restore context: `rem/restoration/PROTOCOL.md`
+- Recent discoveries: `rem/discoveries/`

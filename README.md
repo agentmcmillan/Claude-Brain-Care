@@ -40,6 +40,7 @@ This project integrates and extends several excellent open-source projects:
 | [**Get Shit Done**](https://github.com/glittercowboy/get-shit-done) | glittercowboy | Multi-agent orchestration, parallel execution | MIT |
 | [**Planning with Files**](https://github.com/OthmanAdi/planning-with-files) | OthmanAdi | Manus-style markdown persistence | MIT |
 | [**Memory System Article**](https://medium.com/@nbhyxq/claude-forgot-my-entire-project-so-i-built-a-memory-system-6a872a3cc58f) | Sylweriusz Szydlik | Persistence architecture concepts | - |
+| [**Claude Code Hooks**](https://github.com/karanb192/claude-code-hooks) | karanb192 | Hook patterns for automation | MIT |
 
 ### What We Added
 
@@ -111,6 +112,23 @@ use planning-enhanced agent  # Exploratory research
 | `ralph-enhanced` | Execute stories with context | After Bart creates PRD |
 | `gsd-orchestrator` | Multi-agent complex work | Major refactors, migrations |
 | `planning-enhanced` | Research with persistence | Investigation, exploration |
+
+### Claude Code Hooks (Auto-Sync)
+
+Brain-Wave can be enhanced with [Claude Code hooks](https://github.com/karanb192/claude-code-hooks) for automatic memory synchronization.
+
+| Hook | Trigger | Purpose |
+|------|---------|---------|
+| `auto-sync-rem` | Edit, Write | Auto-updates `rem/CHANGELOG.md` and `rem/LAST-RUN.md` |
+| `auto-index-alpha` | Write | Adds new files to `alpha-wave/INDEX.md` |
+| `session-checkpoint` | idle_prompt | Saves session state to `rem/sessions/` |
+| `discovery-logger` | Task | Logs agent insights to `rem/discoveries/` |
+| `context-hint` | Read | Suggests related files from Beta-Wave |
+
+Install hooks:
+```bash
+bash integrations/hooks/install.sh
+```
 
 ## How the Integration Works
 
@@ -196,10 +214,19 @@ Claude-Brain-Care/
 │   │   ├── gsd-verifier.md
 │   │   ├── gsd-debugger.md
 │   │   └── ...
-│   └── planning-with-files/            # Manus-style planning
-│       ├── SKILL.md
-│       ├── templates/
-│       └── scripts/
+│   ├── planning-with-files/            # Manus-style planning
+│   │   ├── SKILL.md
+│   │   ├── templates/
+│   │   └── scripts/
+│   └── hooks/                          # Claude Code hooks for auto-sync
+│       ├── README.md
+│       ├── ARCHITECTURE.md
+│       ├── install.sh
+│       ├── auto-sync-rem.js
+│       ├── auto-index-alpha.js
+│       ├── session-checkpoint.js
+│       ├── discovery-logger.js
+│       └── context-hint.js
 ├── alpha-wave/                         # Generated: File indexes
 ├── beta-wave/                          # Generated: Architecture maps
 └── rem/                                # Generated: Sessions & discoveries

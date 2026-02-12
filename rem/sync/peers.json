@@ -1,0 +1,32 @@
+{
+  "$schema": "https://brain-wave.dev/schemas/peers.json",
+  "version": "1.0",
+  "instance": {
+    "id": "local-dev",
+    "name": "Development Machine",
+    "created": "2026-02-11"
+  },
+  "peers": [],
+  "syncPolicy": {
+    "autoExport": false,
+    "autoImport": false,
+    "conflictResolution": "manual",
+    "exportOnSessionEnd": false
+  },
+  "examples": {
+    "_comment": "Add peers like these examples",
+    "gitPeer": {
+      "name": "team-shared",
+      "type": "git",
+      "remote": "origin",
+      "branch": "brain-wave-sync",
+      "autoSync": true
+    },
+    "filePeer": {
+      "name": "my-nas",
+      "type": "file",
+      "path": "/Volumes/NAS/brain-wave-sync/",
+      "autoSync": false
+    }
+  }
+}
