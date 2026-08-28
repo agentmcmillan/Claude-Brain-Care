@@ -1,5 +1,12 @@
 # Brain-Wave + Hooks Integration Architecture
 
+Brain-Wave supports two lifecycle front ends over the same memory files:
+
+- Claude Code uses the user-level scripts installed under `~/.claude/hooks/brain-wave/`.
+- Codex uses repository-local `.codex/hooks.json` and the adapters under `integrations/hooks/codex/`.
+
+The Codex installer merges only Brain-Wave handlers, preserves other configured hooks, and leaves hook trust to Codex's `/hooks` review flow.
+
 ## System Overview
 
 ```

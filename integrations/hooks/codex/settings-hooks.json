@@ -1,0 +1,88 @@
+{
+  "description": "Brain-Wave lifecycle hooks for this repository.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/session-context.js\"",
+            "timeout": 5,
+            "statusMessage": "Loading Brain-Wave context",
+            "additionalContextLimit": 2500
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|mcp__.*read.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/context-hint.js\"",
+            "timeout": 3,
+            "statusMessage": "Checking Brain-Wave maps",
+            "additionalContextLimit": 500
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/auto-sync-rem.js\"",
+            "timeout": 5,
+            "statusMessage": "Updating Brain-Wave REM"
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/auto-index-alpha.js\"",
+            "timeout": 5,
+            "statusMessage": "Updating Brain-Wave index"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/discovery-logger.js\"",
+            "timeout": 5,
+            "statusMessage": "Recording Brain-Wave discovery"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/session-checkpoint.js\"",
+            "timeout": 5,
+            "statusMessage": "Checkpointing Brain-Wave memory"
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env node \"$(git rev-parse --show-toplevel)/integrations/hooks/codex/session-checkpoint.js\"",
+            "timeout": 3,
+            "statusMessage": "Saving Brain-Wave session"
+          }
+        ]
+      }
+    ]
+  }
+}

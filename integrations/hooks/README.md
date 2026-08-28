@@ -1,10 +1,10 @@
 # Brain-Wave Hooks Integration
 
-Automated hooks that keep the Brain-Wave memory system synchronized with your work.
+Automated hooks that keep the Brain-Wave memory system synchronized with your work in Claude Code or Codex.
 
 ## Overview
 
-These hooks extend [claude-code-hooks](https://github.com/karanb192/claude-code-hooks) to automatically maintain Brain-Wave memory state:
+The Claude hooks extend [claude-code-hooks](https://github.com/karanb192/claude-code-hooks). Native Codex adapters use repository-local `.codex/hooks.json` and the [Codex lifecycle hook protocol](https://learn.chatgpt.com/docs/hooks).
 
 | Hook | Type | Trigger | Purpose |
 |------|------|---------|---------|
@@ -14,13 +14,49 @@ These hooks extend [claude-code-hooks](https://github.com/karanb192/claude-code-
 | `discovery-logger.js` | PostToolUse | Task | Logs agent discoveries to REM |
 | `context-hint.js` | PreToolUse | Read | Suggests related files from Beta-Wave |
 
-## Installation
+## Claude Code installation
 
 1. Copy hooks to `~/.claude/hooks/brain-wave/`
 2. Add configuration to `~/.claude/settings.json`
 3. Restart Claude Code
 
-## Configuration
+The existing command remains the default:
+
+```bash
+bash integrations/hooks/install.sh
+```
+
+## Codex installation
+
+Install into the Git repository that contains this `integrations/` directory:
+
+```bash
+bash integrations/hooks/install.sh codex
+```
+
+Or install from a separate Claude-Brain-Care clone into another repository:
+
+```bash
+bash /path/to/Claude-Brain-Care/integrations/hooks/install.sh codex \
+  --project /path/to/project
+```
+
+The installer copies the native adapters into `integrations/hooks/codex/` and merges Brain-Wave entries into `<repo>/.codex/hooks.json`. Existing non-Brain-Wave hooks and top-level configuration are preserved. Re-running the installer updates the Brain-Wave definitions without duplicating them.
+
+Codex intentionally requires a separate trust step. Review the generated configuration and scripts, restart Codex in the target repository, then run `/hooks` and trust the definitions you reviewed. The installer never edits Codex's private, hash-based hook-trust state.
+
+| Codex event | Brain-Wave action |
+|-------------|-------------------|
+| `SessionStart` | Loads the restoration protocol, architecture map, index, and latest session into context |
+| `PreToolUse` | Adds bounded Beta-Wave hints for file-oriented shell and read calls |
+| `PostToolUse` (`Edit|Write`) | Updates REM and incrementally indexes newly added files |
+| `SubagentStop` | Records bounded subagent discoveries |
+| `PreCompact` | Saves a checkpoint before context compaction |
+| `SessionEnd` | Saves the final session checkpoint |
+
+The Codex adapters prefer root-level `alpha-wave/`, `beta-wave/`, and `rem/`. If those are absent, they use the existing `.claude/` Brain-Wave store so Claude Code and Codex share one memory corpus.
+
+## Claude Code configuration
 
 Add to your `~/.claude/settings.json`:
 
@@ -100,10 +136,10 @@ Before reading a file:
 ## Testing
 
 ```bash
-# Run tests
-npm test
+# Test native Codex payload handling and config merging
+node integrations/hooks/codex/test-hooks.js
 
-# Test individual hook
+# Test an individual Claude hook
 echo '{"tool":"Edit","file":"/path/to/file.md"}' | node auto-sync-rem.js
 ```
 
@@ -111,7 +147,9 @@ echo '{"tool":"Edit","file":"/path/to/file.md"}' | node auto-sync-rem.js
 
 - Hooks run synchronously; keep them fast (<100ms)
 - Large projects may need throttling
-- Context hints limited to 5 suggestions
+- Claude context hints are limited to 5 suggestions
+- Codex context hints are limited to 3 suggestions by default
+- Codex skips new or changed non-managed hooks until they are reviewed and trusted
 
 ---
 
