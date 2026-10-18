@@ -113,9 +113,9 @@ use planning-enhanced agent  # Exploratory research
 | `gsd-orchestrator` | Multi-agent complex work | Major refactors, migrations |
 | `planning-enhanced` | Research with persistence | Investigation, exploration |
 
-### Claude Code Hooks (Auto-Sync)
+### Claude Code and Codex Hooks (Auto-Sync)
 
-Brain-Wave can be enhanced with [Claude Code hooks](https://github.com/karanb192/claude-code-hooks) for automatic memory synchronization.
+Brain-Wave can use [Claude Code hooks](https://github.com/karanb192/claude-code-hooks) or native Codex lifecycle hooks for automatic memory synchronization.
 
 | Hook | Trigger | Purpose |
 |------|---------|---------|
@@ -127,8 +127,17 @@ Brain-Wave can be enhanced with [Claude Code hooks](https://github.com/karanb192
 
 Install hooks:
 ```bash
+# Existing Claude Code installation
 bash integrations/hooks/install.sh
+
+# Repository-local Codex installation
+bash integrations/hooks/install.sh codex
+
+# Install both runtimes
+bash integrations/hooks/install.sh all
 ```
+
+For a separate target repository, add `--project /path/to/project` to the Codex or `all` command. Codex users must review the installed commands and trust them with `/hooks`; the installer does not bypass that security boundary.
 
 ## How the Integration Works
 
@@ -218,10 +227,11 @@ Claude-Brain-Care/
 │   │   ├── SKILL.md
 │   │   ├── templates/
 │   │   └── scripts/
-│   └── hooks/                          # Claude Code hooks for auto-sync
+│   └── hooks/                          # Claude Code and Codex hooks for auto-sync
 │       ├── README.md
 │       ├── ARCHITECTURE.md
 │       ├── install.sh
+│       ├── codex/                      # Native Codex adapters, template, and tests
 │       ├── auto-sync-rem.js
 │       ├── auto-index-alpha.js
 │       ├── session-checkpoint.js
